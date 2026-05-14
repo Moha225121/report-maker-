@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منشئ كشوفات الحركة - Report Maker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&family=Tajawal:wght@200..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- html2pdf.js for direct PDF download -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <header class="main-header">
+            <div class="logo">
+                <span class="icon">📋</span>
+                <h1>نظام إنشاء كشوفات الحركة</h1>
+            </div>
+            <p class="subtitle">قم بتعبئة البيانات لإنشاء تقرير احترافي جاهز للطباعة</p>
+        </header>
+
+        <main class="content">
+            <section class="form-section">
+                <div class="card">
+                    <h2 class="card-title">معلومات الرحلة</h2>
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label for="from-city">من مدينة</label>
+                            <input type="text" id="from-city" placeholder="مثال: الكفرة">
+                        </div>
+                        <div class="input-group">
+                            <label for="to-city">إلى مدينة</label>
+                            <input type="text" id="to-city" placeholder="مثال: الساره">
+                        </div>
+                        <div class="input-group">
+                            <label for="report-date">التاريخ</label>
+                            <input type="date" id="report-date">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">بيانات السائقين والسيارات</h2>
+                        <button type="button" id="add-row-btn" class="btn btn-secondary">
+                            <span class="plus-icon">+</span> إضافة شخص
+                        </button>
+                    </div>
+                    
+                    <div class="table-wrapper">
+                        <table id="drivers-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>إسم السائق</th>
+                                    <th>رقم الرخصة</th>
+                                    <th>نوع السيارة</th>
+                                    <th>لون السيارة</th>
+                                    <th>رقم السيارة</th>
+                                    <th>نوع الحمولة</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="drivers-body">
+                                <!-- Dynamic Rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button id="preview-btn" class="btn btn-primary">معاينة التقرير</button>
+                    <button id="download-btn" class="btn btn-secondary">تحميل PDF</button>
+                    <button id="print-btn" class="btn btn-success">طباعة التقرير</button>
+                </div>
+            </section>
+
+            <section id="preview-section" class="preview-section hidden">
+                <div class="report-paper" id="report-to-print">
+                    <div class="report-header">
+                        <h2 id="view-report-title">كشف حركة بتاريخ <span></span></h2>
+                        <div class="route-info">
+                            خط السير / من <span id="view-from"></span> إلى <span id="view-to"></span>
+                        </div>
+                    </div>
+
+                    <table class="report-table">
+                        <thead>
+                            <tr>
+                                <th>م</th>
+                                <th>إسم السائق</th>
+                                <th>رقم الرخصة</th>
+                                <th>نوع السيارة</th>
+                                <th>لون السيارة</th>
+                                <th>رقم السيارة</th>
+                                <th>نوع الحمولة</th>
+                            </tr>
+                        </thead>
+                        <tbody id="view-rows">
+                            <!-- Populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <footer class="main-footer">
+            <p>© 2026 نظام التقارير الذكي - جميع الحقوق محفوظة</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
