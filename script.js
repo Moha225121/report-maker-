@@ -65,21 +65,42 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     downloadBtn.addEventListener('click', () => {
+        const originalBtnText = downloadBtn.innerHTML;
+        downloadBtn.innerHTML = 'جاري التحميل...';
+        downloadBtn.disabled = true;
+
         updatePreview();
         const element = document.getElementById('report-to-print');
+        
+        // Ensure RTL is preserved in PDF capture
+        element.setAttribute('dir', 'rtl');
+
         const opt = {
-            margin:       0.5,
+            margin:       [0.5, 0.5],
             filename:     `تقرير_حركة_${reportDateInput.value || 'جديد'}.pdf`,
             image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2, useCORS: true },
+            html2canvas:  { 
+                scale: 2, 
+                useCORS: true,
+                letterRendering: true,
+                windowWidth: 1200 // Force a desktop-like width for capture to prevent mobile layout interference
+            },
             jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
         };
 
-        // Old browsers might need this to show the element temporarily if hidden
+        // Show the preview section temporarily if it's hidden, as some capture engines need visibility
+        const isHidden = previewSection.classList.contains('hidden');
         previewSection.classList.remove('hidden');
+
         html2pdf().set(opt).from(element).save().then(() => {
-            // Optional: hide preview again if it was hidden before
-            // previewSection.classList.add('hidden');
+            if (isHidden) previewSection.classList.add('hidden');
+            downloadBtn.innerHTML = originalBtnText;
+            downloadBtn.disabled = false;
+        }).catch(err => {
+            console.error('PDF Error:', err);
+            alert('حدث خطأ أثناء تحميل الملف. يرجى المحاولة مرة أخرى.');
+            downloadBtn.innerHTML = originalBtnText;
+            downloadBtn.disabled = false;
         });
     });
 

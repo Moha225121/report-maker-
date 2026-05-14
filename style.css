@@ -330,38 +330,55 @@ th {
 @media print {
     @page {
         size: A4;
-        margin: 0;
+        margin: 10mm;
     }
-    body {
+    
+    html, body {
         background: white !important;
         color: black !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        height: auto !important;
+        overflow: visible !important;
+    }
+
+    .app-container {
         padding: 0 !important;
         margin: 0 !important;
-        -webkit-print-color-adjust: exact;
+        max-width: none !important;
     }
+
     .app-container > *:not(.preview-section) {
         display: none !important;
     }
+
     .preview-section {
         display: block !important;
         margin: 0 !important;
         padding: 0 !important;
         border: none !important;
+        visibility: visible !important;
     }
+
     .report-paper {
         box-shadow: none !important;
-        width: 210mm !important;
-        min-height: 297mm !important;
+        width: 100% !important;
+        max-width: 210mm !important;
         margin: 0 auto !important;
-        padding: 15mm !important;
+        padding: 0 !important;
         border: none !important;
-    }
-    .hidden {
         display: block !important;
     }
+
+    .report-table {
+        width: 100% !important;
+        border-collapse: collapse !important;
+    }
+
     .report-header h2 {
         background: #f1f5f9 !important;
         -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
     }
 }
 
