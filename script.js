@@ -59,49 +59,41 @@ document.addEventListener('DOMContentLoaded', () => {
         previewSection.scrollIntoView({ behavior: 'smooth' });
     });
 
-    printBtn.addEventListener('click', () => {
+    printBtn.addEventListener('click', async () => {
         updatePreview();
+        if (document.fonts && document.fonts.ready) {
+            await document.fonts.ready;
+        }
+        await new Promise(requestAnimationFrame);
         window.print();
     });
 
-    downloadBtn.addEventListener('click', () => {
+    downloadBtn.addEventListener('click', async () => {
         const originalBtnText = downloadBtn.innerHTML;
-        downloadBtn.innerHTML = 'جاري التحميل...';
+        downloadBtn.innerHTML = 'جاري فتح نافذة الحفظ...';
         downloadBtn.disabled = true;
 
         updatePreview();
-        const element = document.getElementById('report-to-print');
-        
-        // Ensure RTL is preserved in PDF capture
-        element.setAttribute('dir', 'rtl');
-
-        const opt = {
-            margin:       [0.5, 0.5],
-            filename:     `تقرير_حركة_${reportDateInput.value || 'جديد'}.pdf`,
-            image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { 
-                scale: 2, 
-                useCORS: true,
-                letterRendering: true,
-                windowWidth: 1200 // Force a desktop-like width for capture to prevent mobile layout interference
-            },
-            jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
-        };
-
-        // Show the preview section temporarily if it's hidden, as some capture engines need visibility
         const isHidden = previewSection.classList.contains('hidden');
         previewSection.classList.remove('hidden');
 
-        html2pdf().set(opt).from(element).save().then(() => {
-            if (isHidden) previewSection.classList.add('hidden');
-            downloadBtn.innerHTML = originalBtnText;
-            downloadBtn.disabled = false;
-        }).catch(err => {
-            console.error('PDF Error:', err);
-            alert('حدث خطأ أثناء تحميل الملف. يرجى المحاولة مرة أخرى.');
-            downloadBtn.innerHTML = originalBtnText;
-            downloadBtn.disabled = false;
-        });
+        try {
+            if (document.fonts && document.fonts.ready) {
+                await document.fonts.ready;
+            }
+
+            await new Promise(requestAnimationFrame);
+            window.print();
+        } catch (err) {
+            console.error('Print Error:', err);
+            alert('حدث خطأ أثناء فتح نافذة الحفظ. يرجى المحاولة مرة أخرى.');
+        } finally {
+            setTimeout(() => {
+                if (isHidden) previewSection.classList.add('hidden');
+                downloadBtn.innerHTML = originalBtnText;
+                downloadBtn.disabled = false;
+            }, 500);
+        }
     });
 
     function updatePreview() {

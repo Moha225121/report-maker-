@@ -211,12 +211,11 @@ th {
 .report-paper {
     background: white;
     color: black;
-    width: 210mm; /* A4 width */
-    min-height: 297mm;
+    width: 175mm; /* Narrower width to ensure it fits perfectly within PDF margins */
     margin: 0 auto;
-    padding: 20mm;
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    padding: 10mm;
     position: relative;
+    min-height: 270mm;
 }
 
 .report-header {
@@ -225,11 +224,14 @@ th {
 }
 
 .report-header h2 {
-    font-size: 24pt;
+    font-size: 20pt;
     margin-bottom: 1rem;
     background: #f1f5f9;
-    padding: 10px;
+    padding: 10px 15px;
     display: inline-block;
+    border-radius: 8px;
+    max-width: 100%;
+    word-wrap: break-word;
 }
 
 .route-info {
@@ -248,6 +250,12 @@ th {
     text-align: center;
     color: black;
     font-size: 12pt;
+    page-break-inside: avoid;
+}
+
+.report-table tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
 }
 
 .report-table th {
@@ -348,8 +356,14 @@ th {
         max-width: none !important;
     }
 
-    .app-container > *:not(.preview-section) {
+    .main-header,
+    .form-section,
+    .main-footer {
         display: none !important;
+    }
+
+    .content {
+        display: block !important;
     }
 
     .preview-section {
